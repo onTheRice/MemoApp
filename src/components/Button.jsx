@@ -1,19 +1,24 @@
 /* eslint-disable linebreak-style */
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { string } from 'prop-types';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { string, func } from 'prop-types';
 
 export default function Button(props) {
-  const { label } = props;
+  const { label, onPress } = props;
   return (
-    <View style={styles.buttonContainer}>
+    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
       <Text style={styles.buttonLabel}>{label}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 Button.propTypes = {
   label: string.isRequired,
+  onPress: func,
+};
+
+Button.defaultProps = {
+  onPress: null,
 };
 
 const styles = StyleSheet.create({
