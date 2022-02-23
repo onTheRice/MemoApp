@@ -1,5 +1,5 @@
 /* eslint-disable linebreak-style */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, StyleSheet, TouchableOpacity, Alert,
 } from 'react-native';
@@ -11,6 +11,25 @@ export default function LoginScreen(props) {
   const { navigation } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    console.log('useEffect!');
+    return () => {
+      console.log('Unmount');
+    };
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   function handlePress() {
     firebase.auth().signInWithEmailAndPassword(email, password)
@@ -93,8 +112,8 @@ const styles = StyleSheet.create({
     borderColor: '#DDDDDD',
     borderWidth: 1,
     paddingHorizontal: 8,
-    color: 'rgba(0, 0, 0, 0.2)',
     marginBottom: 16,
+    color: 'black',
   },
   footerText: {
     fontSize: 14,
